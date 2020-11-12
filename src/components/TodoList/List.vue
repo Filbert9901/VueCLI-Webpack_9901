@@ -58,13 +58,16 @@
                 </v-container>
             </v-card-text>
 
-            <v-card-actions>
-                <v-space></v-space>
+            <v-card-actions>            
+                <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="cancel">
                     Cancel
                 </v-btn>
                 <v-btn color="blue darken-1" text @click="save">
                     Save
+                </v-btn>        
+                 <v-btn v-show="editing" color="blue darken-1" text @click="edit" >
+                    Edit
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -79,6 +82,8 @@ export default {
       return{
           search:null,
           dialog:false,
+          index:null,
+          editing:false,
           headers:[
             {
                 text: "Task",
@@ -134,17 +139,22 @@ export default {
             const index = this.todos.indexOf(item);
             this.todos.splice(index,1);
          },
-          editItem(item){
-              this.dialog= true;
-              const index = this.todos.indexOf(item);
-              edit(index)
-          },
-           edit(index){ 
-              this.todos.splice(index,1);
-              this.resetForm();
-              this.dialog= false;
+          edit(){   
+                const test = this.index;
+                this.todos.splice(test,1);
+                this.todos.splice(test,0,this.formTodo);
+                this.resetForm();
+                this.dialog= false;
+                this.editing= false;
+           },
 
-           }
+          editItem(item){
+              this.index = this.todos.indexOf(item);
+              this.dialog= true;
+              this.editing= true;
+              this.edit();
+          },
+          
             
   },
 };
